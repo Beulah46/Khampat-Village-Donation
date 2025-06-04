@@ -17,3 +17,9 @@ app.post('/create-subscription', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+body: JSON.stringify({ 
+  email: document.getElementById('email').value,
+  name: document.getElementById('name').value,
+  phone: document.getElementById('phone').value,
+  address: document.getElementById('address').value
+}),
