@@ -14,7 +14,7 @@
   </form>
 
   <script>
-    const stripe = Stripe('YOUR_PUBLISHABLE_KEY'); // Replace with actual publishable key
+    const stripe = Stripe('pk_test_YOUR_PUBLISHABLE_KEY_HERE'); // Replace with your real key
     const elements = stripe.elements();
     const card = elements.create('card');
     card.mount('#card-element');
@@ -22,7 +22,7 @@
     const form = document.getElementById('donation-form');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const res = await fetch('/create-subscription', {
+      const res = await fetch('https://khampat-village-donation.onrender.com/create-subscription', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: document.getElementById('email').value }),
