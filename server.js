@@ -1,7 +1,12 @@
 const fs = require('fs');
 
-app.post('/create-subscription', (req, res) => {
-  const { name, email, phone, address } = req.body;
+const express = require('express');
+const app = express();
+const fs = require('fs');
+
+app.use(express.json());
+
+// your existing routes follow...
 
   const donorEntry = {
     name,
