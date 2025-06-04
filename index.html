@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Village Relief Donation</title>
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <h2>Support Our Village Relief</h2>
+  <form id="donation-form">
+    <input type="email" id="email" placeholder="Your email" required />
+    <div id="card-element"></div>
+    <button type="submit">Donate Monthly</button>
+  </form>
+
+  <script>
+    const stripe = Stripe('YOUR_PUBLISHABLE_KEY'); // Replace with actual publishable key
+    const elements = stripe.elements();
+    const card = elements.create('card');
+    card.mount('#card-element');
+
+    const form = document.getElementById('donation-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const res = await fetch('/create-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: document.getElementById('email').value }),
+      });
+      const { clientSecret } = await res.json();
+      const result = await stripe.confirmCardSetup(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: { email: document.getElementById('email').value },
+        },
+      });
+      if (result.error) {
+        alert(result.error.message);
+      } else {
+        alert('Subscription successful! Thank you.');
+      }
+    });
+  </script>
+</body>
+</html>
