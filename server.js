@@ -1,44 +1,38 @@
-const express = require('express');
-const app = express();
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const cors = require('cors');
-require('dotenv').config();
+const fs = require('fs');
 
-app.use(cors());
-app.use(express.static('public'));
-app.use(express.json());
+app.post('/create-subscription', (req, res) => {
+  const { name, email, phone, address } = req.body;
 
-app.post('/create-subscription', async (req, res) => {
-  const { email, name, phone, address } = req.body;
-
-  console.log("New Donor Info:");
-  console.log("Name:", name);
-  console.log("Email:", email);
-  console.log("Phone:", phone);
-  console.log("Address:", address);
-
-  // Here you could add code to save to a database or email service
-
-  const customer = await stripe.customers.create({
-    email,
+  const donorEntry = {
     name,
+    email,
     phone,
-    address: {
-      line1: address
+    address,
+    date: new Date().toISOString()
+  };
+
+  // Save to a local file
+  fs.readFile('donors.json', 'utf8', (err, data) => {
+    let donors = [];
+    if (!err && data) {
+      try {
+        donors = JSON.parse(data);
+      } catch (e) {
+        donors = [];
+      }
     }
+
+    donors.push(donorEntry);
+
+    fs.writeFile('donors.json', JSON.stringify(donors, null, 2), (err) => {
+      if (err) {
+        console.error('Failed to save donor:', err);
+        return res.status(500).send('Error saving donor.');
+      }
+
+      console.log('Donor saved:', donorEntry);
+      // For now, send fake clientSecret (replace with Stripe later)
+      res.send({ clientSecret: 'fake_client_secret_for_demo' });
+    });
   });
-
-  const setupIntent = await stripe.setupIntents.create({
-    customer: customer.id,
-  });
-
-  res.send({ clientSecret: setupIntent.client_secret });
 });
-
-  const customer = await stripe.customers.create({ email });
-  const setupIntent = await stripe.setupIntents.create({ customer: customer.id });
-  res.send({ clientSecret: setupIntent.client_secret });
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
