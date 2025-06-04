@@ -43,6 +43,9 @@
       border: 1px solid purple;
       border-radius: 5px;
     }
+    input:invalid {
+      border-color: red;
+    }
     button {
       background: purple;
       color: white;
@@ -104,10 +107,10 @@
       </div>
 
       <label>Card Number</label>
-      <input type="text" placeholder="1234 4567 4569 4568" pattern="\d{4} \d{4} \d{4} \d{4}" required>
+      <input type="text" placeholder="1234 4567 4569 4568" pattern="^(\d{4} \d{4} \d{4} \d{4})$" title="Card number must be in the format: 1234 5678 9012 3456" required>
 
       <label>Exp Month</label>
-      <input type="text" placeholder="Only accepted to 12" pattern="0[1-9]|1[0-2]" maxlength="2" required>
+      <input type="number" placeholder="Only accepted to 12" min="1" max="12" required>
 
       <label>Exp Year</label>
       <input type="text" placeholder="Enter Exp Year">
