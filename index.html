@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Village Relief Donation</title>
   <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -14,7 +15,7 @@
   </form>
 
   <script>
-    const stripe = Stripe('pk_test_51...your_real_key'); // your correct key
+    const stripe = Stripe('pk_test_REPLACE_WITH_YOUR_KEY'); // Replace with your real key from Stripe
     const elements = stripe.elements();
     const card = elements.create('card');
     card.mount('#card-element');
