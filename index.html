@@ -66,6 +66,13 @@
     }
     .card-icons img {
       height: 30px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .card-icons img.selected {
+      transform: scale(1.2);
+      border: 2px solid purple;
+      border-radius: 5px;
     }
   </style>
 </head>
@@ -99,18 +106,19 @@
   <form class="container" id="payment-form">
     <div class="form-section">
       <h2>Payment Details</h2>
-      <div class="card-icons">
+      <div class="card-icons" id="card-selector">
         <img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa">
         <img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="Mastercard">
         <img src="https://img.icons8.com/color/48/000000/amex.png" alt="American Express">
         <img src="https://img.icons8.com/color/48/000000/discover.png" alt="Discover">
+        <img src="https://img.icons8.com/color/48/000000/paypal.png" alt="PayPal">
       </div>
 
       <label>Card Number</label>
-      <input type="text" placeholder="1234 4567 4569 4568" pattern="^(\d{4} \d{4} \d{4} \d{4})$" title="Card number must be in the format: 1234 5678 9012 3456" required>
+      <input type="text" placeholder="1234 4567 4569 4568" pattern="^\d{4} \d{4} \d{4} \d{4}$" title="Card number must be in the format: 1234 5678 9012 3456" required>
 
       <label>Exp Month</label>
-      <input type="number" placeholder="No More 12" min="1" max="12" required>
+      <input type="number" placeholder="Only accepted to 12" min="1" max="12" required>
 
       <label>Exp Year</label>
       <input type="text" placeholder="Enter Exp Year">
@@ -121,5 +129,15 @@
       <button type="submit">Proceed To Pay</button>
     </div>
   </form>
+
+  <script>
+    const icons = document.querySelectorAll('#card-selector img');
+    icons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        icons.forEach(i => i.classList.remove('selected'));
+        icon.classList.add('selected');
+      });
+    });
+  </script>
 </body>
 </html>
